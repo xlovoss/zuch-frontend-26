@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import * as PIXI from 'pixi.js';
-import { Bunny } from './features/bunny/bunny';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Bunny],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
