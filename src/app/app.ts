@@ -1,23 +1,23 @@
 import { Component, signal, OnInit } from '@angular/core'; // OnInit importieren
 import { RouterOutlet } from '@angular/router';
 import { StateService } from './state.service';
+import { Map } from './features/map/map';
 
 @Component({
   selector: 'app-root',
-  standalone: true, 
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, Map],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App implements OnInit {
   protected readonly title = signal('Hannaa is also running');
 
-  constructor(public state: StateService) {
-  }
+  constructor(public state: StateService) {}
 
   ngOnInit() {
-    this.state.initLogin('event_8'); 
+    this.state.initLogin('event_8');
 
-    console.log("Verbindung wird aufgebaut..."); 
+    console.log('Verbindung wird aufgebaut...');
   }
 }
