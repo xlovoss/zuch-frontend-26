@@ -24,8 +24,19 @@ export class Map implements AfterViewInit {
     const rectangle = new p.Graphics();
     rectangle.rect(200, 475, 200, 150);
     rectangle.fill(0xfff000);
-
-    // Rechteck zur Bühne hinzufügen
     app.stage.addChild(rectangle);
+    this.stateService.tileSubject.subscribe((tiles) => {
+      tiles.forEach((col, y) => {
+        col.forEach((tile, x) => {
+          console.log(x, y);
+          rectangle.rect(x * 20, y * 20, 10, 10);
+          if (tile.Tracks.some((x) => x)) {
+            rectangle.fill(0xfff000);
+          } else {
+            rectangle.fill(0x000fff);
+          }
+        });
+      });
+    });
   }
 }
