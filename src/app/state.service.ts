@@ -14,7 +14,12 @@ export class StateService {
   private tiles: Tile[][] = [];
   public tileSubject: ReplaySubject<Tile[][]> = new ReplaySubject<Tile[][]>();
   public users: any[] = [];
+  
+  
   public mapContainer = new Container();
+
+  public goTrain$ = new ReplaySubject<any>(1); 
+  
 
   constructor(private socketService: SocketService) {
     this.socketService.messages$.subscribe((envelope: ServerEnvelope) => {
@@ -22,7 +27,7 @@ export class StateService {
     });
   }
 
-  // Login Methode
+ 
   public initLogin(username: string) {
     this.socketService.connect(username);
   }
@@ -44,6 +49,61 @@ export class StateService {
         console.log('State: Neue Station', envelope.Msg);
         this.stations.set(envelope.Msg.Id, envelope.Msg);
         this.stationSubject.next(this.stations);
+        this.stations.push(envelope.Msg.Id,envelope.Msg);
+        break;
+
+     
+      case 'train.move':
+        const payload = envelope.Msg;
+        //console.log("E: Train Go", payload);
+
+        if (payload.Waggons && payload.Waggons.length > 0) {
+            
+            const wagonList = payload.Waggons.map((waggon: any, index: number) => {
+                if (!waggon.Position) return null;
+                
+                return {
+                    index: index,        
+                    col: waggon.Position[1], 
+                    row: waggon.Position[0],
+                    load: waggon.Load || null
+                };
+            }).filter((w: any) => w !== null);
+
+            const moveData = {
+                id: payload.Id || payload.ID, 
+                wagons: wagonList
+            };
+            
+            this.goTrain$.next(moveData);
+        }
+        break;
+
+     
+      case 'train.move':
+        const payload = envelope.Msg;
+        //console.log("E: Train Go", payload);
+
+        if (payload.Waggons && payload.Waggons.length > 0) {
+            
+            const wagonList = payload.Waggons.map((waggon: any, index: number) => {
+                if (!waggon.Position) return null;
+                
+                return {
+                    index: index,        
+                    col: waggon.Position[1], 
+                    row: waggon.Position[0],
+                    load: waggon.Load || null
+                };
+            }).filter((w: any) => w !== null);
+
+            const moveData = {
+                id: payload.Id || payload.ID, 
+                wagons: wagonList
+            };
+            
+            this.goTrain$.next(moveData);
+        }
         break;
     }
   }
