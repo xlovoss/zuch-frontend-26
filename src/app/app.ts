@@ -1,11 +1,12 @@
-import { Component, signal, OnInit } from '@angular/core'; // OnInit importieren
+import { Component, signal, OnInit } from '@angular/core'; 
 import { RouterOutlet } from '@angular/router';
 import { StateService } from './state.service';
+import { GameComponent } from './game/game';
 
 @Component({
   selector: 'app-root',
   standalone: true, 
-  imports: [RouterOutlet],
+  imports: [GameComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SocketService, ServerEnvelope } from './socket.get_api';
 import { Container } from 'pixi.js';
-import { Subject } from 'rxjs'; 
+import { ReplaySubject } from 'rxjs'; 
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class StateService {
   
   public mapContainer = new Container();
 
-  public trainMoves$ = new Subject<any>(); 
+  public goTrain$ = new ReplaySubject<any>(1); 
   
 
   constructor(private socketService: SocketService) {
@@ -46,7 +46,7 @@ export class StateService {
      
       case 'train.move':
         const payload = envelope.Msg;
-        console.log("E: Train Move", payload);
+        //console.log("E: Train Go", payload);
 
         if (payload.Waggons && payload.Waggons.length > 0) {
             
@@ -66,7 +66,7 @@ export class StateService {
                 wagons: wagonList
             };
             
-            this.trainMoves$.next(moveData);
+            this.goTrain$.next(moveData);
         }
         break;
     }
